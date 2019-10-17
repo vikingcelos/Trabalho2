@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package HelloWorld;
 
 import java.rmi.RemoteException;
@@ -10,17 +5,29 @@ import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
- * @author a1654861
+ *
  */
 public class EmpImpl extends UnicastRemoteObject implements InterfaceEmp {
 
+    /**
+     * 
+     * @throws RemoteException 
+     */
     public EmpImpl () throws RemoteException {
-        
+        //cara... tem uma parada aqui que é assim:
+        //podemos usar o Emp/Cli Impl pra chamar os metodos remotos..
+        //Ou fazer isso dentro do main()... Eu acho que tanto faz a maneira que sera feita..
+        //O que muda é que o menuzinho vem aqui pra dentro, eu acho? talvez n
     }
     
+    /**
+     * 
+     * @param area
+     * @throws RemoteException 
+     */
     @Override
-    public void recebeNotificacao(String notificacao) throws RemoteException {
-        
+    public void recebeNotificacao(String area) throws RemoteException {
+        System.out.println("\nUm novo currículo interessado na área de " + area + " acabou de ser cadastrado!");
     }
     
 }

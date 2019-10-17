@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package HelloWorld;
 
 /**
  *
- * @author Paulo
+ *
  */
 public class Cadastro {
     private String nome;
@@ -16,6 +11,14 @@ public class Cadastro {
     private String cargaHoraria;
     private String salario;
 
+    /**
+     * 
+     * @param nome
+     * @param contato
+     * @param area
+     * @param cargaHoraria
+     * @param salario 
+     */
     public Cadastro (String nome, String contato, String area, String cargaHoraria, String salario) {
         this.nome=nome;
         this.contato=contato;

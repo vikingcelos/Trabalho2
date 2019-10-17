@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package HelloWorld;
 
 import java.rmi.RemoteException;
@@ -13,7 +8,7 @@ import java.util.function.BiConsumer;
 
 /**
  *
- * @author a1654861
+ *
  */
 public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
  
@@ -35,7 +30,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
             //A seguir, atribuicao simples para copiar o array. Como nao utilizamos fora daqui, nao tem problema
             vagasDaArea = vagas.get(area);
             for(Cadastro aux: vagasDaArea){
-                if (aux.getSalario() > Double.parseDouble(salarioPretendido)){
+                if (Double.parseDouble(aux.getSalario()) > Double.parseDouble(salarioPretendido)){
                     vagasFiltradas.add(aux);
                 }
             }
@@ -65,12 +60,14 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
             vagas.put(area, new ArrayList<Cadastro>());
             vagas.get(area).add(novaVaga);
         }
-        //notifica alguem
+        checaInteressadosVaga(area);
     }
 
     @Override
     public void CadastraCurriculo(String nome, String contato, String area, String cargaHoraria, String salario) throws RemoteException {
         Cadastro novoCurriculo = new Cadastro(nome, contato, area, cargaHoraria, salario);
+        // SE EU JA CADASTREI O MEU CURRICULO, DESTA VEZ EU IREI ALTERÁ-LO. PORTANTO SERIA ALGO COMO REMOVER O EXISTENTE E BOTAR UM NOVO?
+        // TEMOS QUE OLHAR ISSO AQUI, PEDRO
         if (curriculos.containsKey(area)) {
             curriculos.get(area).add(novoCurriculo);
         }
@@ -78,11 +75,12 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
             curriculos.put(area, new ArrayList<Cadastro>());
             curriculos.get(area).add(novoCurriculo);
         }
-        //notifica alguem
+        //notifica a empresa da existencia de um novo curriculo na area
     }
 
     @Override
     public void registraInteresse(InterfaceCli cliente, String area) throws RemoteException {
+        // VERIFICAR SE O CLIENTE JA ESTA REGISTRADO NESTA AREA. (neste caso so nao acntece nada_)
         if (interesseCli.containsKey(area)) {
             interesseCli.get(area).add(cliente);
         }
@@ -94,10 +92,24 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
 
     @Override
     public void registraInteresse(InterfaceEmp empresa, String area) throws RemoteException {
-        
+        //VERIFICAR SE A EMPRESA JA ESTA REGISTRADA NESSA AREA (neste caso so n acontece nada)
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Aqui ficam os metodos nao chamaveis
+    
+    private void checaInteressadosVaga(String area) throws RemoteException {
+        ArrayList<InterfaceCli> listaInteressados = interesseCli.get(area);
+        for(InterfaceCli aux: listaInteressados) {
+            aux.recebeNotificacao(area);
+        }
+    }
+    
+    private void checaInteressadosCurriculo(String area) throws RemoteException {
+        ArrayList<InterfaceEmp> listaInteressados = interesseEmp.get(area);
+        for(InterfaceEmp aux: listaInteressados) {
+            aux.recebeNotificacao(area);
+        }
+    }
     
 }
