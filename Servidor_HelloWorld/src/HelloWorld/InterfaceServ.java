@@ -7,19 +7,17 @@ package HelloWorld;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  *
- * @author a1654861
+ *
  */
 public interface InterfaceServ extends Remote {
     
-    public void chamar(String qualquer, InterfaceCli cliente) throws RemoteException;
+    public ArrayList consultaVagas(String area, String salarioPretendido) throws RemoteException;
     
-    public HashMap consultaVagas(String area, String salarioPretendido) throws RemoteException;
-    
-    public HashMap consultaCurriculos(String area) throws RemoteException;
+    public ArrayList consultaCurriculos(String area) throws RemoteException;
     
     public void CadastraVaga(String nome, String contato, String area, String cargaHoraria, String salario) throws RemoteException;
     
