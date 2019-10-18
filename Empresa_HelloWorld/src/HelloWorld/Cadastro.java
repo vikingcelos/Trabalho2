@@ -12,6 +12,10 @@ public class Cadastro {
     private String cargaHoraria;
     private String salario;
 
+    public Cadastro () {
+        
+    }
+    
     /**
      * Método construtor da classe. Pega os parâmetros de entrada
      * e os coloca nos campos do objeto.

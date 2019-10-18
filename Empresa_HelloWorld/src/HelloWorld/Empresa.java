@@ -5,6 +5,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,18 +19,23 @@ public class Empresa {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args){
+    public static void main(String[] args) throws RemoteException{
         
         //Variáveis
         InterfaceServ referenciaServidor = null;
+        InterfaceEmp referenciaEmp = null;
         Boolean logado = true;
+        Scanner scanner = new Scanner(System.in);
+        Cadastro cadastro = new Cadastro();
+        String escolha = new String();
+        String area = new String();
         
         //Conexão com o servidor
         try {
                 Registry referenciaServicoNomes = LocateRegistry.getRegistry(2048);
                 //lembrar de fazer o cast abaixo!!
                 referenciaServidor = (InterfaceServ) referenciaServicoNomes.lookup("servidor");
-                InterfaceEmp referenciaEmp = new EmpImpl();
+                referenciaEmp = new EmpImpl();
                 //lembrar desta excecao abaixo!!
             } catch (RemoteException | NotBoundException ex) { System.out.println(ex) ; }
         
@@ -41,9 +48,41 @@ public class Empresa {
             System.out.println("Digite 2 para cadastrar/alterar sua vaga de emprego");
             System.out.println("Digite 3 para registrar interesse em curriculos de uma area");
             System.out.println("Digite 4 para sair?");
-            //fazer um scanner e entao pegar os inputs referentes às escolhas acima.
+            escolha = scanner.nextLine();
             //Aí colocar os ifs para chamar os métodos remotos.
+            switch (escolha) {
+                case "1":
+                    System.out.println("Digite a area de interesse para visualizar os curriculos correspondentes");
+                    ArrayList curriculos = referenciaServidor.consultaCurriculos(scanner.nextLine());
+                    //if curriculos!=null, forEach printa na tela
+                    break;
             //Por enquanto nao existe nada pra sair ou "deslogar"
+                case "2":
+                    //Nao fiz nada de alterar vaga aqui. Mas parece que tera de ser feito..
+                    System.out.println("Para cadastrar uma vaga, Primeiro digite o nome da vaga:");
+                    cadastro.setNome(scanner.nextLine());
+                    System.out.println("Agora digite o email para contato:");
+                    cadastro.setContato(scanner.nextLine());
+                    System.out.println("Agora digite a area da vaga");
+                    cadastro.setArea(scanner.nextLine());
+                    System.out.println("Agora digite a carga horaria desta vaga");
+                    cadastro.setCargaHoraria(scanner.nextLine());
+                    System.out.println("Agora digite o salario oferecido (somente numeros)");
+                    cadastro.setSalario(scanner.nextLine());
+                    referenciaServidor.CadastraVaga(cadastro.getNome(), cadastro.getContato(), cadastro.getArea(), cadastro.getCargaHoraria(), cadastro.getSalario());
+                    //Aqui tem que aparecer uma mensagem de "cadastro realizado com sucesso!", mas o CERTO seria ela vir do Servidor, não daqui.
+                    //Caso ela venha do servidor, tem que criar ou adaptar um método aqui na empresa/cliente pra receber a msg e então mostrar.
+                    System.out.println("Cadastro realizado com sucesso!");
+                    break;
+                case "3":
+                    System.out.println("Por favor, digite a area de interesse:");
+                    referenciaServidor.registraInteresse(referenciaEmp, scanner.nextLine());
+                    System.out.println("Interesse registrado com sucesso!");
+                    break;
+                default:
+                    System.out.println("Comando invalido. Por favor digite novamente.");
+                    break;
+            }
         }
         
         

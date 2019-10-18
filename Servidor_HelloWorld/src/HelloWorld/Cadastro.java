@@ -12,6 +12,10 @@ public class Cadastro {
     private String cargaHoraria;
     private String salario;
 
+    public Cadastro () {
+        
+    }
+    
     /**
      * Método construtor da classe. Pega os parâmetros de entrada
      * e os coloca nos campos do objeto.
@@ -21,7 +25,7 @@ public class Cadastro {
      * @param area
      * @param cargaHoraria
      * @param salario 
-     */
+     */    
     public Cadastro (String nome, String contato, String area, String cargaHoraria, String salario) {
         this.nome=nome;
         this.contato=contato;

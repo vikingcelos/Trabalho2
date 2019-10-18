@@ -184,7 +184,8 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      */
     private void checaInteressadosVaga(String area) throws RemoteException {
         ArrayList<InterfaceCli> listaInteressados = interesseCli.get(area);
-        for(InterfaceCli aux: listaInteressados) {
+        //if vaga nao foi criada, retorna null
+        for(InterfaceCli aux: interesseCli.get(area)) {
             aux.recebeNotificacao(area);
         }
     }
@@ -198,6 +199,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      */
     private void checaInteressadosCurriculo(String area) throws RemoteException {
         ArrayList<InterfaceEmp> listaInteressados = interesseEmp.get(area);
+        //if vaga nao foi criada, retorna null
         for(InterfaceEmp aux: listaInteressados) {
             aux.recebeNotificacao(area);
         }
