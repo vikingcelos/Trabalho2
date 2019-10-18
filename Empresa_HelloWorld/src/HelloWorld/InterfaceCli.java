@@ -9,6 +9,6 @@ import java.rmi.RemoteException;
  */
 public interface InterfaceCli extends Remote {
     
-    public void recebeNotificacao(String area) throws RemoteException;
+    public void recebeNotificacao(String notificacao) throws RemoteException;
     
 }

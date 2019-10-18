@@ -28,7 +28,6 @@ public class Empresa {
         Scanner scanner = new Scanner(System.in);
         Cadastro cadastro = new Cadastro();
         String escolha = new String();
-        String area = new String();
         
         //Conexão com o servidor
         try {
@@ -43,7 +42,7 @@ public class Empresa {
 
         //Menu de selecoes
         while(logado) {
-            System.out.println("Para utilizar o servico, selecione uma das opcoes abaixo:");
+            System.out.println("\nPara utilizar o servico, selecione uma das opcoes abaixo:");
             System.out.println("Digite 1 para visualizar os curriculos existentes");
             System.out.println("Digite 2 para cadastrar/alterar sua vaga de emprego");
             System.out.println("Digite 3 para registrar interesse em curriculos de uma area");
@@ -53,8 +52,20 @@ public class Empresa {
             switch (escolha) {
                 case "1":
                     System.out.println("Digite a area de interesse para visualizar os curriculos correspondentes");
-                    ArrayList curriculos = referenciaServidor.consultaCurriculos(scanner.nextLine());
-                    //if curriculos!=null, forEach printa na tela
+                    ArrayList<Cadastro> curriculos = referenciaServidor.consultaCurriculos(scanner.nextLine());
+                    if (curriculos != null) {
+                        if (!curriculos.isEmpty()) {
+                            for(Cadastro aux: curriculos) {
+                                System.out.println("/n Curriculo de: " +aux.getNome()+ "/nContato: " +aux.getContato()+ "/nCarga Horaria disponivel: "+ aux.getCargaHoraria()+ "/nSalario pretendido: " +aux.getSalario());
+                            }
+                        }
+                        else {
+                            System.out.println("/nNao ha curriculos nesta area!");
+                        }
+                    }
+                    else {
+                        System.out.println("/nNao ha curriculos nesta area! mama");
+                    }
                     break;
             //Por enquanto nao existe nada pra sair ou "deslogar"
                 case "2":
@@ -69,18 +80,14 @@ public class Empresa {
                     cadastro.setCargaHoraria(scanner.nextLine());
                     System.out.println("Agora digite o salario oferecido (somente numeros)");
                     cadastro.setSalario(scanner.nextLine());
-                    referenciaServidor.CadastraVaga(cadastro.getNome(), cadastro.getContato(), cadastro.getArea(), cadastro.getCargaHoraria(), cadastro.getSalario());
-                    //Aqui tem que aparecer uma mensagem de "cadastro realizado com sucesso!", mas o CERTO seria ela vir do Servidor, não daqui.
-                    //Caso ela venha do servidor, tem que criar ou adaptar um método aqui na empresa/cliente pra receber a msg e então mostrar.
-                    System.out.println("Cadastro realizado com sucesso!");
+                    referenciaServidor.CadastraVaga(cadastro.getNome(), cadastro.getContato(), cadastro.getArea(), cadastro.getCargaHoraria(), cadastro.getSalario(), referenciaEmp);
                     break;
                 case "3":
                     System.out.println("Por favor, digite a area de interesse:");
                     referenciaServidor.registraInteresse(referenciaEmp, scanner.nextLine());
-                    System.out.println("Interesse registrado com sucesso!");
                     break;
                 default:
-                    System.out.println("Comando invalido. Por favor digite novamente.");
+                    System.out.println("Comando invalido. Por favor digite novamente./n");
                     break;
             }
         }

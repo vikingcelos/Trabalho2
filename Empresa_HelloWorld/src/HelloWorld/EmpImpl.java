@@ -26,8 +26,8 @@ public class EmpImpl extends UnicastRemoteObject implements InterfaceEmp {
      * @throws RemoteException 
      */
     @Override
-    public void recebeNotificacao(String area) throws RemoteException {
-        System.out.println("\nUm novo currículo interessado na área de " + area + " acabou de ser cadastrado!");
+    public void recebeNotificacao(String notificacao) throws RemoteException {
+        System.out.println(notificacao);
     }
     
 }

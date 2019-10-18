@@ -39,13 +39,10 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      */
     @Override
     public ArrayList consultaVagas(String area, String salarioPretendido) throws RemoteException {
-        ArrayList<Cadastro> vagasDaArea;
         ArrayList<Cadastro> vagasFiltradas = new ArrayList<Cadastro>();
         if (vagas.containsKey(area)) {
-            //A seguir, atribuicao simples para copiar o array. Como nao utilizamos fora daqui, nao tem problema
-            vagasDaArea = vagas.get(area);
-            for(Cadastro aux: vagasDaArea){
-                if (Double.parseDouble(aux.getSalario()) > Double.parseDouble(salarioPretendido)){
+            for(Cadastro aux: vagas.get(area)){
+                if (Double.parseDouble(aux.getSalario()) >= Double.parseDouble(salarioPretendido)){
                     vagasFiltradas.add(aux);
                 }
             }
@@ -74,36 +71,48 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
     }
 
     /**
-     * Método que insere/altera uma vaga no HashMap de vagas.
-     * Instancia um objeto Cadastro e então o adiciona no HashMap.
+     * Método que insere/altera uma vaga no HashMap de vagas.Instancia um objeto Cadastro e então o adiciona no HashMap.
      * Caso já exista um, altera o existente.
-     * Após este processo, envia uma notificação para os clientes interessados
-     * em vagas nesta área.
+ Após este processo, envia uma notificação para os clientes interessados
+ em vagas nesta área.
      * 
      * @param nome
      * @param contato
      * @param area
      * @param cargaHoraria
      * @param salario
+     * @param empresa
      * @throws RemoteException 
      */
     @Override
-    public void CadastraVaga(String nome, String contato, String area, String cargaHoraria, String salario) throws RemoteException {
-        Cadastro novaVaga = new Cadastro(nome, contato, area, cargaHoraria, salario);
-        // Adicionar alguma parada para poder alterar vaga existente.
+    public void CadastraVaga(String nome, String contato, String area, String cargaHoraria, String salario, InterfaceEmp empresa) throws RemoteException {
+        Boolean jaExiste = false;
+        Cadastro novaVaga = new Cadastro(nome, contato, area, cargaHoraria, salario, empresa);
         if (vagas.containsKey(area)) {
-            vagas.get(area).add(novaVaga);
+            for(Cadastro aux : vagas.get(area)) {
+                if ((aux.getNome().equalsIgnoreCase(nome)) && (aux.getReferenciaEmp().equals(empresa))) {
+                    jaExiste = true;
+                    vagas.get(area).remove(aux);
+                    vagas.get(area).add(novaVaga);
+                    empresa.recebeNotificacao("*Vaga alterada com sucesso!*");
+                    break;
+                }
+            }
+            if (jaExiste == false) {
+                vagas.get(area).add(novaVaga);
+                empresa.recebeNotificacao("*Vaga criada com sucesso!*");
+            }
         }
         else { //caso nao tem nenhuma vaga nessa area ainda
             vagas.put(area, new ArrayList<Cadastro>());
             vagas.get(area).add(novaVaga);
+            empresa.recebeNotificacao("*Vaga criada com sucesso!*");
         }
         checaInteressadosVaga(area);
     }
 
     /**
-     * Método que insere/altera um curriculo no HashMap de curriculos.
-     * Instancia um objeto Cadastro e então o adiciona no HashMap.
+     * Método que insere/altera um curriculo no HashMap de curriculos.Instancia um objeto Cadastro e então o adiciona no HashMap.
      * Caso já exista um, altera o existente.
      * Após este processo, envia uma notificação para as empresas interessadas
      * em currículos nesta área.
@@ -113,19 +122,32 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      * @param area
      * @param cargaHoraria
      * @param salario
+     * @param cliente
      * @throws RemoteException 
      */
     @Override
-    public void CadastraCurriculo(String nome, String contato, String area, String cargaHoraria, String salario) throws RemoteException {
-        Cadastro novoCurriculo = new Cadastro(nome, contato, area, cargaHoraria, salario);
-        // SE EU JA CADASTREI O MEU CURRICULO, DESTA VEZ EU IREI ALTERÁ-LO. PORTANTO SERIA ALGO COMO REMOVER O EXISTENTE E BOTAR UM NOVO?
-        // TEMOS QUE OLHAR ISSO AQUI, PEDRO
+    public void CadastraCurriculo(String nome, String contato, String area, String cargaHoraria, String salario, InterfaceCli cliente) throws RemoteException {
+        Boolean jaExiste = false;
+        Cadastro novoCurriculo = new Cadastro(nome, contato, area, cargaHoraria, salario, cliente);
         if (curriculos.containsKey(area)) {
-            curriculos.get(area).add(novoCurriculo);
+            for(Cadastro aux: curriculos.get(area)) {
+                if (aux.getReferenciaCli().equals(cliente)) {
+                    jaExiste = true;
+                    curriculos.get(area).remove(aux);
+                    curriculos.get(area).add(novoCurriculo);
+                    cliente.recebeNotificacao("*Curriculo alterado com sucesso!*");
+                    break;
+                }
+            }
+            if (jaExiste == false) {
+                curriculos.get(area).add(novoCurriculo);
+                cliente.recebeNotificacao("*Curriculo criado com sucesso!*");
+            }
         }
         else { //caso nao tem nenhuma vaga nessa area ainda
             curriculos.put(area, new ArrayList<Cadastro>());
             curriculos.get(area).add(novoCurriculo);
+            cliente.recebeNotificacao("*Curriculo criado com sucesso!*");
         }
         checaInteressadosCurriculo(area);
     }
@@ -143,6 +165,9 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
         if (interesseCli.containsKey(area)) {
             if (!interesseCli.get(area).contains(cliente)) {
                 interesseCli.get(area).add(cliente);
+            }
+            else {
+                cliente.recebeNotificacao("*Voce ja esta cadastrado para receber notificacoes desta area*");
             }
         }
         else {
@@ -165,6 +190,9 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
             if (!interesseEmp.get(area).contains(empresa)) {
                 interesseEmp.get(area).add(empresa);
             }
+            else {
+                empresa.recebeNotificacao("*Voce ja esta cadastrado para receber notificacoes desta area*");
+            }
         }
         else {
             interesseEmp.put(area, new ArrayList<InterfaceEmp>());
@@ -183,10 +211,11 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      * @throws RemoteException 
      */
     private void checaInteressadosVaga(String area) throws RemoteException {
-        ArrayList<InterfaceCli> listaInteressados = interesseCli.get(area);
-        //if vaga nao foi criada, retorna null
-        for(InterfaceCli aux: interesseCli.get(area)) {
-            aux.recebeNotificacao(area);
+        //ArrayList<InterfaceCli> listaInteressados = interesseCli.get(area);
+        if (interesseCli.containsKey(area)) {
+            for(InterfaceCli aux: interesseCli.get(area)) {
+                aux.recebeNotificacao("*Uma nova vaga surgiu na area de " + area + " *");
+            }
         }
     }
     
@@ -198,10 +227,11 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      * @throws RemoteException 
      */
     private void checaInteressadosCurriculo(String area) throws RemoteException {
-        ArrayList<InterfaceEmp> listaInteressados = interesseEmp.get(area);
-        //if vaga nao foi criada, retorna null
-        for(InterfaceEmp aux: listaInteressados) {
-            aux.recebeNotificacao(area);
+        //ArrayList<InterfaceEmp> listaInteressados = interesseEmp.get(area);
+        if (interesseEmp.containsKey(area)) {
+            for(InterfaceEmp aux: interesseEmp.get(area)) {
+                aux.recebeNotificacao("*Um novo curriculo surgiu na area de " + area + " *");
+            }
         }
     }
     

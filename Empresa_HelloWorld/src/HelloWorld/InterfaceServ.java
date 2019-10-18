@@ -14,9 +14,9 @@ public interface InterfaceServ extends Remote {
     
     public ArrayList consultaCurriculos(String area) throws RemoteException;
     
-    public void CadastraVaga(String nome, String contato, String area, String cargaHoraria, String salario) throws RemoteException;
+    public void CadastraVaga(String nome, String contato, String area, String cargaHoraria, String salario, InterfaceEmp empresa) throws RemoteException;
     
-    public void CadastraCurriculo(String nome, String contato, String area, String cargaHoraria, String salario) throws RemoteException;
+    public void CadastraCurriculo(String nome, String contato, String area, String cargaHoraria, String salario, InterfaceCli cliente) throws RemoteException;
     
     public void registraInteresse(InterfaceCli cliente, String area) throws RemoteException;
     

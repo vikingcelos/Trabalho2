@@ -22,8 +22,8 @@ public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
      * @param area 
      */
     @Override
-    public void recebeNotificacao (String area) {
-        System.out.println("\nUma nova vaga na área de " + area + " acabou de ser aberta!");
+    public void recebeNotificacao (String notificacao) {
+        System.out.println(notificacao);
     }
     
     
