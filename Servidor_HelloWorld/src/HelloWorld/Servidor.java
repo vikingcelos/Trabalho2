@@ -1,20 +1,18 @@
 package HelloWorld;
 
-import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * Classe principal do Servidor (main)
  *
  */
 public class Servidor {
 
     /**
-     * @param args the command line arguments
+     * Método main. Aqui é onde está localizado a criação do serviço de nomes
+     * e a inicialização da classe servente.
      */
     public static void main(String[] args) {
         

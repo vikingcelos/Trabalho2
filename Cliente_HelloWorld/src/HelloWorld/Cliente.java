@@ -28,7 +28,7 @@ public class Cliente {
                 Registry referenciaServicoNomes = LocateRegistry.getRegistry(2048);
                 //lembrar de fazer o cast abaixo!!
                 referenciaServidor = (InterfaceServ) referenciaServicoNomes.lookup("servidor");
-                InterfaceCli referenciaCli = new CliImpl(referenciaServidor);
+                InterfaceCli referenciaCli = new CliImpl();
                 //lembrar desta excecao abaixo!!
             } catch (RemoteException | NotBoundException ex) { System.out.println(ex) ; }
         

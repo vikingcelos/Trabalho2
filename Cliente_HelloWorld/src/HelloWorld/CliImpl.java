@@ -8,15 +8,12 @@ import java.rmi.server.UnicastRemoteObject;
  *
  */
 public class CliImpl extends UnicastRemoteObject implements InterfaceCli {
-
-    private InterfaceServ referenciaservidor;
     
     /**
      * 
-     * @param refserv
      * @throws RemoteException 
      */
-    public CliImpl(InterfaceServ refserv) throws RemoteException {
+    public CliImpl() throws RemoteException {
         
     }
     

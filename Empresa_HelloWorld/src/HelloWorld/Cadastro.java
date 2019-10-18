@@ -1,16 +1,35 @@
 package HelloWorld;
 
 /**
- *
- *
+ * Classe auxiliar que guarda as informações de Cadastro, seja
+ * de uma vaga ou de um currículo.
+ * É utilizada nas listas para guardar as informações mais facilmente.
  */
 public class Cadastro {
     private String nome;
     private String contato;
     private String area;
     private String cargaHoraria;
-    private Double salario;
+    private String salario;
 
+    /**
+     * Método construtor da classe. Pega os parâmetros de entrada
+     * e os coloca nos campos do objeto.
+     * 
+     * @param nome
+     * @param contato
+     * @param area
+     * @param cargaHoraria
+     * @param salario 
+     */
+    public Cadastro (String nome, String contato, String area, String cargaHoraria, String salario) {
+        this.nome=nome;
+        this.contato=contato;
+        this.area=area;
+        this.cargaHoraria=cargaHoraria;
+        this.salario=salario;
+    }
+    
     /**
      * @return the nome
      */
@@ -70,14 +89,14 @@ public class Cadastro {
     /**
      * @return the salario
      */
-    public Double getSalario() {
+    public String getSalario() {
         return salario;
     }
 
     /**
      * @param salario the salario to set
      */
-    public void setSalario(Double salario) {
+    public void setSalario(String salario) {
         this.salario = salario;
     }
 }

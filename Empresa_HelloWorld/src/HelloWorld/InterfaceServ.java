@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
- *
+ * Interface do Servidor.
  *
  */
 public interface InterfaceServ extends Remote {

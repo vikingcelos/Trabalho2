@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
+ * Classe servente do Servidor
  *
  */
 public class ServImpl extends UnicastRemoteObject implements InterfaceServ {

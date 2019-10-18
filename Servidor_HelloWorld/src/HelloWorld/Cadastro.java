@@ -1,8 +1,9 @@
 package HelloWorld;
 
 /**
- *
- *
+ * Classe auxiliar que guarda as informações de Cadastro, seja
+ * de uma vaga ou de um currículo.
+ * É utilizada nas listas para guardar as informações mais facilmente.
  */
 public class Cadastro {
     private String nome;
@@ -12,6 +13,8 @@ public class Cadastro {
     private String salario;
 
     /**
+     * Método construtor da classe. Pega os parâmetros de entrada
+     * e os coloca nos campos do objeto.
      * 
      * @param nome
      * @param contato
