@@ -1,23 +1,20 @@
 package HelloWorld;
 
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * Classe main da Empresa
  * 
  */
 public class Empresa {
 
     /**
-     * @param args the command line arguments
+     * Método main da empresa. Aqui é onde está o menu de seleção e os métodos remotos são chamados
      */
     public static void main(String[] args) throws RemoteException{
         
@@ -38,7 +35,7 @@ public class Empresa {
                 //lembrar desta excecao abaixo!!
             } catch (RemoteException | NotBoundException ex) { System.out.println(ex) ; }
         
-        System.out.println("Ola! Seja bem-vindo ao servico de vagas!");
+        System.out.println("Ola! Seja bem-vindo ao servico de vagas de emprego!");
 
         //Menu de selecoes
         while(logado) {
@@ -46,30 +43,13 @@ public class Empresa {
             System.out.println("Digite 1 para visualizar os curriculos existentes");
             System.out.println("Digite 2 para cadastrar/alterar sua vaga de emprego");
             System.out.println("Digite 3 para registrar interesse em curriculos de uma area");
-            System.out.println("Digite 4 para sair?");
             escolha = scanner.nextLine();
-            //Aí colocar os ifs para chamar os métodos remotos.
             switch (escolha) {
                 case "1":
                     System.out.println("Digite a area de interesse para visualizar os curriculos correspondentes");
-                    ArrayList<Cadastro> curriculos = referenciaServidor.consultaCurriculos(scanner.nextLine());
-                    if (curriculos != null) {
-                        if (!curriculos.isEmpty()) {
-                            for(Cadastro aux: curriculos) {
-                                System.out.println("/n Curriculo de: " +aux.getNome()+ "/nContato: " +aux.getContato()+ "/nCarga Horaria disponivel: "+ aux.getCargaHoraria()+ "/nSalario pretendido: " +aux.getSalario());
-                            }
-                        }
-                        else {
-                            System.out.println("/nNao ha curriculos nesta area!");
-                        }
-                    }
-                    else {
-                        System.out.println("/nNao ha curriculos nesta area! mama");
-                    }
+                    referenciaServidor.consultaCurriculos(scanner.nextLine(), referenciaEmp);
                     break;
-            //Por enquanto nao existe nada pra sair ou "deslogar"
                 case "2":
-                    //Nao fiz nada de alterar vaga aqui. Mas parece que tera de ser feito..
                     System.out.println("Para cadastrar uma vaga, Primeiro digite o nome da vaga:");
                     cadastro.setNome(scanner.nextLine());
                     System.out.println("Agora digite o email para contato:");
@@ -87,7 +67,7 @@ public class Empresa {
                     referenciaServidor.registraInteresse(referenciaEmp, scanner.nextLine());
                     break;
                 default:
-                    System.out.println("Comando invalido. Por favor digite novamente./n");
+                    System.out.println("Comando invalido. Por favor digite novamente.\n");
                     break;
             }
         }

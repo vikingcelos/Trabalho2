@@ -29,45 +29,47 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
     }
 
     /**
-     * Método de consulta de vagas que retorna um ArrayList de vagas relacionadas a area de entrada e que possuem 
+     * Método de consulta de vagas que printa as vagas relacionadas à area de entrada e que possuem 
      * um salario maior que o valor pretendido recebido na entrada.
      * 
      * @param area
      * @param salarioPretendido
-     * @return lista de 'Cadastro' com vagas da area que tem salario acima do pretendido, ou Null caso nenhuma vaga esteja cadastrada nessa area
+     * @param cliente
      * @throws RemoteException 
      */
     @Override
-    public ArrayList consultaVagas(String area, String salarioPretendido) throws RemoteException {
-        ArrayList<Cadastro> vagasFiltradas = new ArrayList<Cadastro>();
+    public void consultaVagas(String area, String salarioPretendido, InterfaceCli cliente) throws RemoteException {
+        Boolean haVagas = null;
         if (vagas.containsKey(area)) {
             for(Cadastro aux: vagas.get(area)){
                 if (Double.parseDouble(aux.getSalario()) >= Double.parseDouble(salarioPretendido)){
-                    vagasFiltradas.add(aux);
+                    cliente.recebeNotificacao("\n Vaga de: " +aux.getNome()+ "\nContato: " +aux.getContato()+ "\nCarga Horaria requerida: "+ aux.getCargaHoraria()+ "\nSalario oferecido: " +aux.getSalario());
+                    haVagas = true;
                 }
             }
-            return(vagasFiltradas);
+            if (haVagas != true) {
+                cliente.recebeNotificacao("Nao ha vagas com este salario na area escolhida!");
+            }
         }
-        else {return null;}
+        else {cliente.recebeNotificacao("Nao ha vagas na area escolhida!");}
     }
 
     /**
-     * Método de consulta de currículos que retorna um ArrayList com os currículos da area
+     * Método de consulta de currículos que printa os currículos da area
      * recebida como entrada
      * 
      * @param area
-     * @return lista com curriculos da area recebida como entrada, ou Null caso não tenha nenhum curriculo cadastrado nesta area
+     * @param empresa
      * @throws RemoteException 
      */
     @Override
-    public ArrayList consultaCurriculos(String area) throws RemoteException {
-        //ArrayList<Cadastro> curriculosFiltrados = new ArrayList<Cadastro>();
+    public void consultaCurriculos(String area, InterfaceEmp empresa) throws RemoteException {
         if (curriculos.containsKey(area)) {
-            //A seguir, atribuicao simples para copiar o array. Aqui utilizaremos fora, mas por enquanto eu botei direto o do HashMap. Podem haver implicacoes!!
-            //curriculosFiltrados = vagas.get(area);
-            return(vagas.get(area));
+            for(Cadastro aux: curriculos.get(area)){
+                empresa.recebeNotificacao("\n Curriculo de: " +aux.getNome()+ "\nContato: " +aux.getContato()+ "\nCarga Horaria disponivel: "+ aux.getCargaHoraria()+ "\nSalario pretendido: " +aux.getSalario());
+            }
         }
-        else {return null;} // return curriculosFiltrados
+        else {empresa.recebeNotificacao("Nao ha curriculos na area escolhida!");}
     }
 
     /**
@@ -214,7 +216,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
         //ArrayList<InterfaceCli> listaInteressados = interesseCli.get(area);
         if (interesseCli.containsKey(area)) {
             for(InterfaceCli aux: interesseCli.get(area)) {
-                aux.recebeNotificacao("*Uma nova vaga surgiu na area de " + area + " *");
+                aux.recebeNotificacao("\n*Uma nova vaga surgiu na area de " + area + " *");
             }
         }
     }
@@ -230,7 +232,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
         //ArrayList<InterfaceEmp> listaInteressados = interesseEmp.get(area);
         if (interesseEmp.containsKey(area)) {
             for(InterfaceEmp aux: interesseEmp.get(area)) {
-                aux.recebeNotificacao("*Um novo curriculo surgiu na area de " + area + " *");
+                aux.recebeNotificacao("\n*Um novo curriculo surgiu na area de " + area + " *");
             }
         }
     }

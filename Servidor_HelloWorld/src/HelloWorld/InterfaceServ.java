@@ -10,9 +10,9 @@ import java.util.ArrayList;
  */
 public interface InterfaceServ extends Remote {
     
-    public ArrayList consultaVagas(String area, String salarioPretendido) throws RemoteException;
+    public void consultaVagas(String area, String salarioPretendido, InterfaceCli cliente) throws RemoteException;
     
-    public ArrayList consultaCurriculos(String area) throws RemoteException;
+    public void consultaCurriculos(String area, InterfaceEmp empresa) throws RemoteException;
     
     public void CadastraVaga(String nome, String contato, String area, String cargaHoraria, String salario, InterfaceEmp empresa) throws RemoteException;
     
