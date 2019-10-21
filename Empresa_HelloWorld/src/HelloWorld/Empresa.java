@@ -35,39 +35,42 @@ public class Empresa {
                 //lembrar desta excecao abaixo!!
             } catch (RemoteException | NotBoundException ex) { System.out.println(ex) ; }
         
-        System.out.println("Ola! Seja bem-vindo ao servico de vagas de emprego!");
-
+        System.out.println("***********************************************************************************");
+        System.out.println("*              Olá! Seja bem-vindo ao serviço de vagas de emprego!                *");
+        System.out.println("***********************************************************************************");
         //Menu de selecoes
         while(logado) {
-            System.out.println("\nPara utilizar o servico, selecione uma das opcoes abaixo:");
+            System.out.println("***********************************************************************************");
+            System.out.println("Para utilizar o serviço, selecione uma das opcoes abaixo:");
             System.out.println("Digite 1 para visualizar os curriculos existentes");
             System.out.println("Digite 2 para cadastrar/alterar sua vaga de emprego");
             System.out.println("Digite 3 para registrar interesse em curriculos de uma area");
             escolha = scanner.nextLine();
+            System.out.println("***********************************************************************************\n");
             switch (escolha) {
                 case "1":
-                    System.out.println("Digite a area de interesse para visualizar os curriculos correspondentes");
+                    System.out.println("Digite a área de interesse para visualizar os currículos correspondentes: ");
                     referenciaServidor.consultaCurriculos(scanner.nextLine(), referenciaEmp);
                     break;
                 case "2":
-                    System.out.println("Para cadastrar uma vaga, Primeiro digite o nome da vaga:");
+                    System.out.println("Para cadastrar uma vaga, primeiro digite o nome da vaga:");
                     cadastro.setNome(scanner.nextLine());
-                    System.out.println("Agora digite o email para contato:");
+                    System.out.println("\nAgora digite o email para contato:");
                     cadastro.setContato(scanner.nextLine());
-                    System.out.println("Agora digite a area da vaga");
+                    System.out.println("\nAgora digite a area da vaga:");
                     cadastro.setArea(scanner.nextLine());
-                    System.out.println("Agora digite a carga horaria desta vaga");
+                    System.out.println("\nAgora digite a carga horaria desta vaga:");
                     cadastro.setCargaHoraria(scanner.nextLine());
-                    System.out.println("Agora digite o salario oferecido (somente numeros)");
+                    System.out.println("\nAgora digite o salário oferecido (somente numeros): \n");
                     cadastro.setSalario(scanner.nextLine());
                     referenciaServidor.CadastraVaga(cadastro.getNome(), cadastro.getContato(), cadastro.getArea(), cadastro.getCargaHoraria(), cadastro.getSalario(), referenciaEmp);
                     break;
                 case "3":
-                    System.out.println("Por favor, digite a area de interesse:");
+                    System.out.println("Por favor, digite a área de interesse:");
                     referenciaServidor.registraInteresse(referenciaEmp, scanner.nextLine());
                     break;
                 default:
-                    System.out.println("Comando invalido. Por favor digite novamente.\n");
+                    System.out.println("Comando inválido. Por favor digite novamente.\n");
                     break;
             }
         }

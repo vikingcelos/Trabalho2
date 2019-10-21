@@ -43,15 +43,17 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
         if (vagas.containsKey(area)) {
             for(Cadastro aux: vagas.get(area)){
                 if (Double.parseDouble(aux.getSalario()) >= Double.parseDouble(salarioPretendido)){
-                    cliente.recebeNotificacao("\n Vaga de: " +aux.getNome()+ "\nContato: " +aux.getContato()+ "\nCarga Horaria requerida: "+ aux.getCargaHoraria()+ "\nSalario oferecido: " +aux.getSalario());
+                    System.out.println("***********************************************************************************");
+                    cliente.recebeNotificacao("\nVaga de: " +aux.getNome()+ "\nContato: " +aux.getContato()+ "\nCarga Horaria requerida: "+ aux.getCargaHoraria()+ "\nSalario oferecido: " +aux.getSalario());
+                    System.out.println("***********************************************************************************\n");
                     haVagas = true;
                 }
             }
             if (haVagas != true) {
-                cliente.recebeNotificacao("Nao ha vagas com este salario na area escolhida!");
+                cliente.recebeNotificacao("Nao há vagas com este salario na area escolhida!");
             }
         }
-        else {cliente.recebeNotificacao("Nao ha vagas na area escolhida!");}
+        else {cliente.recebeNotificacao("Nao há vagas na área escolhida!");}
     }
 
     /**
@@ -66,7 +68,9 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
     public void consultaCurriculos(String area, InterfaceEmp empresa) throws RemoteException {
         if (curriculos.containsKey(area)) {
             for(Cadastro aux: curriculos.get(area)){
-                empresa.recebeNotificacao("\n Curriculo de: " +aux.getNome()+ "\nContato: " +aux.getContato()+ "\nCarga Horaria disponivel: "+ aux.getCargaHoraria()+ "\nSalario pretendido: " +aux.getSalario());
+                System.out.println("***********************************************************************************");
+                empresa.recebeNotificacao("\nCurriculo de: " +aux.getNome()+ "\nContato: " +aux.getContato()+ "\nCarga Horaria disponivel: "+ aux.getCargaHoraria()+ "\nSalario pretendido: " +aux.getSalario());
+                System.out.println("***********************************************************************************\n");
             }
         }
         else {empresa.recebeNotificacao("Nao ha curriculos na area escolhida!");}
@@ -137,19 +141,25 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
                     jaExiste = true;
                     curriculos.get(area).remove(aux);
                     curriculos.get(area).add(novoCurriculo);
-                    cliente.recebeNotificacao("*Curriculo alterado com sucesso!*");
+                    System.out.println("***********************************************************************************\n");
+                    cliente.recebeNotificacao("*                         Curriculo alterado com sucesso!                         *");
+                    System.out.println("***********************************************************************************\n");
                     break;
                 }
             }
             if (jaExiste == false) {
                 curriculos.get(area).add(novoCurriculo);
-                cliente.recebeNotificacao("*Curriculo criado com sucesso!*");
+                System.out.println("***********************************************************************************");
+                cliente.recebeNotificacao("*                          Currículo criado com sucesso!                          *");
+                System.out.println("***********************************************************************************\n");
             }
         }
         else { //caso nao tem nenhuma vaga nessa area ainda
             curriculos.put(area, new ArrayList<Cadastro>());
             curriculos.get(area).add(novoCurriculo);
-            cliente.recebeNotificacao("*Curriculo criado com sucesso!*");
+            System.out.println("***********************************************************************************");
+            cliente.recebeNotificacao("*                          Currículo criado com sucesso!                          *");
+            System.out.println("***********************************************************************************\n");
         }
         checaInteressadosCurriculo(area);
     }
