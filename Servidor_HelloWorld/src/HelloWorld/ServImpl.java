@@ -14,6 +14,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
     // Hashmaps que guardam as listas
     private HashMap<String,ArrayList<Cadastro>> vagas;
     private HashMap<String,ArrayList<Cadastro>> curriculos;
+    
     private HashMap<String,ArrayList<InterfaceEmp>> interesseEmp;
     private HashMap<String,ArrayList<InterfaceCli>> interesseCli;
 
@@ -43,9 +44,9 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
         if (vagas.containsKey(area)) {
             for(Cadastro aux: vagas.get(area)){
                 if (Double.parseDouble(aux.getSalario()) >= Double.parseDouble(salarioPretendido)){
-                    System.out.println("***********************************************************************************");
+                    cliente.recebeNotificacao("***********************************************************************************");
                     cliente.recebeNotificacao("\nVaga de: " +aux.getNome()+ "\nContato: " +aux.getContato()+ "\nCarga Horaria requerida: "+ aux.getCargaHoraria()+ "\nSalario oferecido: " +aux.getSalario());
-                    System.out.println("***********************************************************************************\n");
+                    cliente.recebeNotificacao("***********************************************************************************\n");
                     haVagas = true;
                 }
             }
@@ -68,9 +69,9 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
     public void consultaCurriculos(String area, InterfaceEmp empresa) throws RemoteException {
         if (curriculos.containsKey(area)) {
             for(Cadastro aux: curriculos.get(area)){
-                System.out.println("***********************************************************************************");
+                empresa.recebeNotificacao("***********************************************************************************");
                 empresa.recebeNotificacao("\nCurriculo de: " +aux.getNome()+ "\nContato: " +aux.getContato()+ "\nCarga Horaria disponivel: "+ aux.getCargaHoraria()+ "\nSalario pretendido: " +aux.getSalario());
-                System.out.println("***********************************************************************************\n");
+                empresa.recebeNotificacao("***********************************************************************************\n");
             }
         }
         else {empresa.recebeNotificacao("Nao ha curriculos na area escolhida!");}
@@ -96,6 +97,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
         Cadastro novaVaga = new Cadastro(nome, contato, area, cargaHoraria, salario, empresa);
         if (vagas.containsKey(area)) {
             for(Cadastro aux : vagas.get(area)) {
+                // Ja enviei vaga com esse nome, ou seja, quero alterar
                 if ((aux.getNome().equalsIgnoreCase(nome)) && (aux.getReferenciaEmp().equals(empresa))) {
                     jaExiste = true;
                     vagas.get(area).remove(aux);
@@ -104,6 +106,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
                     break;
                 }
             }
+            //Se não estou alterando, então é vaga nova
             if (jaExiste == false) {
                 vagas.get(area).add(novaVaga);
                 empresa.recebeNotificacao("*Vaga criada com sucesso!*");
@@ -137,29 +140,30 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
         Cadastro novoCurriculo = new Cadastro(nome, contato, area, cargaHoraria, salario, cliente);
         if (curriculos.containsKey(area)) {
             for(Cadastro aux: curriculos.get(area)) {
+                // Ja enviei curriculo nessa area, ou seja, quero alterar
                 if (aux.getReferenciaCli().equals(cliente)) {
                     jaExiste = true;
                     curriculos.get(area).remove(aux);
                     curriculos.get(area).add(novoCurriculo);
-                    System.out.println("***********************************************************************************\n");
+                    cliente.recebeNotificacao("***********************************************************************************\n");
                     cliente.recebeNotificacao("*                         Curriculo alterado com sucesso!                         *");
-                    System.out.println("***********************************************************************************\n");
+                    cliente.recebeNotificacao("***********************************************************************************\n");
                     break;
                 }
             }
             if (jaExiste == false) {
                 curriculos.get(area).add(novoCurriculo);
-                System.out.println("***********************************************************************************");
+                cliente.recebeNotificacao("***********************************************************************************");
                 cliente.recebeNotificacao("*                          Currículo criado com sucesso!                          *");
-                System.out.println("***********************************************************************************\n");
+                cliente.recebeNotificacao("***********************************************************************************\n");
             }
         }
         else { //caso nao tem nenhuma vaga nessa area ainda
             curriculos.put(area, new ArrayList<Cadastro>());
             curriculos.get(area).add(novoCurriculo);
-            System.out.println("***********************************************************************************");
+            cliente.recebeNotificacao("***********************************************************************************");
             cliente.recebeNotificacao("*                          Currículo criado com sucesso!                          *");
-            System.out.println("***********************************************************************************\n");
+            cliente.recebeNotificacao("***********************************************************************************\n");
         }
         checaInteressadosCurriculo(area);
     }
@@ -223,7 +227,6 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      * @throws RemoteException 
      */
     private void checaInteressadosVaga(String area) throws RemoteException {
-        //ArrayList<InterfaceCli> listaInteressados = interesseCli.get(area);
         if (interesseCli.containsKey(area)) {
             for(InterfaceCli aux: interesseCli.get(area)) {
                 aux.recebeNotificacao("\n*Uma nova vaga surgiu na area de " + area + " *");
@@ -239,7 +242,6 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      * @throws RemoteException 
      */
     private void checaInteressadosCurriculo(String area) throws RemoteException {
-        //ArrayList<InterfaceEmp> listaInteressados = interesseEmp.get(area);
         if (interesseEmp.containsKey(area)) {
             for(InterfaceEmp aux: interesseEmp.get(area)) {
                 aux.recebeNotificacao("\n*Um novo curriculo surgiu na area de " + area + " *");

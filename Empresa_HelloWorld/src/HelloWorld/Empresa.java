@@ -45,6 +45,7 @@ public class Empresa {
             System.out.println("Digite 1 para visualizar os curriculos existentes");
             System.out.println("Digite 2 para cadastrar/alterar sua vaga de emprego");
             System.out.println("Digite 3 para registrar interesse em curriculos de uma area");
+            System.out.println("Digite 4 para sair");
             escolha = scanner.nextLine();
             System.out.println("***********************************************************************************\n");
             switch (escolha) {
@@ -68,6 +69,9 @@ public class Empresa {
                 case "3":
                     System.out.println("Por favor, digite a área de interesse:");
                     referenciaServidor.registraInteresse(referenciaEmp, scanner.nextLine());
+                    break;
+                case "4":
+                    logado = false;
                     break;
                 default:
                     System.out.println("Comando inválido. Por favor digite novamente.\n");

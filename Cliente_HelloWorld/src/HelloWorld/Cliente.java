@@ -48,6 +48,7 @@ public class Cliente {
             System.out.println("Digite 1 para visualizar as vagas existentes");
             System.out.println("Digite 2 para cadastrar/alterar seu curriculo");
             System.out.println("Digite 3 para registrar interesse em uma area");
+            System.out.println("Digite 4 para sair");
             escolha = scanner.nextLine();
             System.out.println("***********************************************************************************\n");
             switch (escolha) {
@@ -55,7 +56,6 @@ public class Cliente {
                     System.out.println("Digite a area de interesse para as vagas: ");
                     area = scanner.nextLine();
                     System.out.println("Digite o salario pretendido para visualizar as vagas correspondentes");
-                    ArrayList<Cadastro> vagas = null;
                     referenciaServidor.consultaVagas(area, scanner.nextLine(), referenciaCli);
                     break;
                 case "2":
@@ -74,6 +74,9 @@ public class Cliente {
                 case "3":
                     System.out.println("Por favor, digite a área de interesse:");
                     referenciaServidor.registraInteresse(referenciaCli, scanner.nextLine());
+                    break;
+                case "4":
+                    logado = false;
                     break;
                 default:
                     System.out.println("Comando inválido. Por favor digite novamente.\n");

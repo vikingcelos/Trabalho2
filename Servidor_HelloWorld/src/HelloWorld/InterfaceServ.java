@@ -2,7 +2,6 @@ package HelloWorld;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 /**
  * Interface do Servidor.
