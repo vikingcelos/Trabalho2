@@ -29,10 +29,8 @@ public class Empresa {
         //Conexão com o servidor
         try {
                 Registry referenciaServicoNomes = LocateRegistry.getRegistry(2048);
-                //lembrar de fazer o cast abaixo!!
                 referenciaServidor = (InterfaceServ) referenciaServicoNomes.lookup("servidor");
                 referenciaEmp = new EmpImpl();
-                //lembrar desta excecao abaixo!!
             } catch (RemoteException | NotBoundException ex) { System.out.println(ex) ; }
         
         System.out.println("***********************************************************************************");

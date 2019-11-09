@@ -11,31 +11,10 @@ public class Cadastro {
     private String area;
     private String cargaHoraria;
     private String salario;
-    private InterfaceCli referenciaCli;
     private InterfaceEmp referenciaEmp;
 
     public Cadastro () {
         
-    }
-    
-    /**
-     * Método construtor da classe para Cadastro de curriculo.Pega os parâmetros de entrada
- e os coloca nos campos do objeto.
-     * 
-     * @param nome
-     * @param contato
-     * @param area
-     * @param cargaHoraria
-     * @param salario 
-     * @param cliente
-     */    
-    public Cadastro (String nome, String contato, String area, String cargaHoraria, String salario, InterfaceCli cliente) {
-        this.nome=nome;
-        this.contato=contato;
-        this.area=area;
-        this.cargaHoraria=cargaHoraria;
-        this.salario=salario;
-        this.referenciaCli=cliente;
     }
     
     /**
@@ -126,20 +105,6 @@ public class Cadastro {
      */
     public void setSalario(String salario) {
         this.salario = salario;
-    }
-
-    /**
-     * @return the referenciaCli
-     */
-    public InterfaceCli getReferenciaCli() {
-        return referenciaCli;
-    }
-
-    /**
-     * @param referenciaCli the referenciaCli to set
-     */
-    public void setReferenciaCli(InterfaceCli referenciaCli) {
-        this.referenciaCli = referenciaCli;
     }
 
     /**

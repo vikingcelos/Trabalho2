@@ -40,7 +40,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
      */
     @Override
     public void consultaVagas(String area, String salarioPretendido, InterfaceCli cliente) throws RemoteException {
-        Boolean haVagas = null;
+        Boolean haVagas = false;
         if (vagas.containsKey(area)) {
             for(Cadastro aux: vagas.get(area)){
                 if (Double.parseDouble(aux.getSalario()) >= Double.parseDouble(salarioPretendido)){
@@ -50,7 +50,7 @@ public class ServImpl extends UnicastRemoteObject implements InterfaceServ {
                     haVagas = true;
                 }
             }
-            if (haVagas != true) {
+            if (!haVagas) {
                 cliente.recebeNotificacao("Nao há vagas com este salario na area escolhida!");
             }
         }
